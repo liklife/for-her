@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С днём рождения, моя любимая 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose:     #f2a7b8;
+    --blush:    #fce4ec;
+    --petal:    #fdf0f5;
+    --deep:     #c2607a;
+    --soft:     #f8c8d4;
+    --cream:    #fffaf8;
+    --text:     #5a3040;
+    --muted:    #b07080;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── FLOATING PETALS ── */
+  .petals-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    top: -60px;
+    font-size: 1.4rem;
+    opacity: 0;
+    animation: fallPetal linear infinite;
+  }
+  @keyframes fallPetal {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0);   opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(110vh) rotate(720deg) translateX(60px); opacity: 0; }
+  }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(160deg, #fff0f5 0%, #fce4ec 50%, #fff9fb 100%);
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(242,167,184,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(252,228,236,0.4) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.7rem, 2vw, 0.9rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--deep);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--deep);
+    margin: 0.3em 0;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--rose); }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .hero-date {
+    margin-top: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    letter-spacing: 0.2em;
+    color: var(--rose);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    opacity: 0; animation: fadeUp 1s ease 2s forwards;
+    color: var(--muted); font-size: 1.4rem; letter-spacing: 0.15em;
+  }
+  .scroll-hint span { display: block; width: 1px; height: 50px; background: var(--rose); animation: growLine 2s ease 2.5s infinite; }
+  @keyframes growLine { 0%,100%{transform:scaleY(0.3);opacity:0.4} 50%{transform:scaleY(1);opacity:1} }
+
+  /* ── SECTIONS COMMON ── */
+  section {
+    position: relative; z-index: 1;
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 8vw, 6rem);
+  }
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 1rem;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 300; color: var(--deep);
+    line-height: 1.1; margin-bottom: 1.5rem;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s;
+  }
+  .visible .section-label,
+  .visible .section-title { opacity: 1; transform: none; }
+
+  /* ── MEMORIES ── */
+  #memories { background: var(--petal); }
+  .memories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .memory-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.8rem;
+    box-shadow: 0 4px 30px rgba(194,96,122,0.08);
+    border: 1px solid rgba(242,167,184,0.2);
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
+    cursor: default;
+  }
+  .memory-card:hover {
+    box-shadow: 0 8px 40px rgba(194,96,122,0.15);
+    transform: translateY(-4px) !important;
+  }
+  .memory-card.visible { opacity: 1; transform: translateY(0); }
+  .memory-emoji { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .memory-date {
+    font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 0.5rem;
+  }
+  .memory-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-style: italic;
+    color: var(--text); line-height: 1.5;
+  }
+  .memory-desc {
+    margin-top: 0.6rem; font-size: 0.88rem;
+    color: var(--muted); line-height: 1.6;
+  }
+
+  /* ── REASONS ── */
+  #reasons { background: white; }
+  .reasons-intro {
+    font-size: 1.1rem; color: var(--muted); line-height: 1.8;
+    max-width: 520px; margin-bottom: 3rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s;
+  }
+  .visible .reasons-intro { opacity: 1; transform: none; }
+  .reasons-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 1rem;
+  }
+  .reason-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.4rem 1.6rem;
+    background: var(--blush);
+    border-radius: 16px;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reason-item.visible { opacity: 1; transform: none; }
+  .reason-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300;
+    color: var(--rose); line-height: 1; flex-shrink: 0;
+    min-width: 2rem;
+  }
+  .reason-text {
+    font-size: 0.95rem; color: var(--text);
+    line-height: 1.6; padding-top: 0.3rem;
+  }
+
+  /* ── LETTER ── */
+  #letter {
+    background: linear-gradient(135deg, #fce4ec 0%, #fff0f5 100%);
+    text-align: center;
+  }
+  .envelope-wrap {
+    max-width: 640px; margin: 3rem auto 0;
+    opacity: 0; transform: scale(0.95);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .envelope-wrap.visible { opacity: 1; transform: scale(1); }
+  .envelope {
+    background: white;
+    border-radius: 24px;
+    padding: 3.5rem 3rem;
+    box-shadow: 0 20px 80px rgba(194,96,122,0.15);
+    border: 1px solid rgba(242,167,184,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .envelope::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 320px solid transparent;
+    border-right: 320px solid transparent;
+    border-top: 120px solid rgba(252,228,236,0.6);
+  }
+  .envelope-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+  .letter-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 3vw, 1.4rem);
+    font-style: italic; line-height: 1.9;
+    color: var(--text);
+    white-space: pre-line;
+  }
+  .letter-sign {
+    margin-top: 2.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--deep);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FINALE ── */
+  #finale {
+    background: var(--deep);
+    text-align: center; color: white;
+    padding: clamp(5rem, 12vw, 10rem) 2rem;
+    overflow: hidden;
+  }
+  #finale::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+  }
+  .finale-small {
+    font-size: 0.8rem; letter-spacing: 0.4em;
+    text-transform: uppercase; opacity: 0.6;
+    margin-bottom: 1.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .finale-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 300; line-height: 1.1;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+  }
+  .finale-big em { font-style: italic; color: var(--soft); }
+  .finale-hearts {
+    margin-top: 3rem; font-size: 2.5rem;
+    letter-spacing: 0.5rem;
+    opacity: 0; transition: opacity 0.7s ease 0.5s;
+  }
+  #finale.visible .finale-small,
+  #finale.visible .finale-big,
+  #finale.visible .finale-hearts { opacity: 1; transform: none; }
+
+  /* ── UTILS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PHOTO SLIDER ── */
+
+.photo-slider{
+  margin-top: 3rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+}
+
+.slider-content{
+  max-width:420px;
+  width:100%;
+  text-align:center;
+}
+
+.slider-content img{
+  width:100%;
+  max-height:600px;
+  object-fit:cover;
+  border-radius:24px;
+  box-shadow:0 10px 40px rgba(194,96,122,0.18);
+}
+
+#sliderCaption{
+  margin-top:1rem;
+  font-family:'Cormorant Garamond', serif;
+  font-size:2.5rem;
+  color:var(--muted);
+  font-style:italic;
+  line-height:1.6;
+}
+
+.slider-btn{
+  border:none;
+  background:white;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  font-size:1.5rem;
+  cursor:pointer;
+  color:var(--deep);
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.slider-btn:hover{
+  transform:scale(1.08);
+}
+
+@media (max-width: 700px){
+
+  .photo-slider{
+    gap:0.5rem;
+  }
+
+  .slider-btn{
+    width:42px;
+    height:42px;
+    font-size:1.2rem;
+  }
+
+  .slider-content{
+    max-width:280px;
+  }
+
+}
+
+  /* ── HEART BUTTON ── */
+  .heart-wrap {
+    margin-top: 3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    position: relative; z-index: 2;
+  }
+  .heart-hint {
+    font-size: 0.85rem; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.55);
+    animation: heartPulseHint 2s ease-in-out infinite;
+  }
+  @keyframes heartPulseHint { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  .big-heart {
+    background: none; border: none; cursor: pointer;
+    font-size: 5rem; line-height: 1;
+    filter: drop-shadow(0 0 20px rgba(255,150,180,0.5));
+    animation: heartBeat 1.4s ease-in-out infinite;
+    transition: transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .big-heart:active { transform: scale(0.88); }
+  @keyframes heartBeat {
+    0%,100% { transform: scale(1); }
+    14%      { transform: scale(1.15); }
+    28%      { transform: scale(1); }
+    42%      { transform: scale(1.1); }
+    56%      { transform: scale(1); }
+  }
+  #confettiCanvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:9999;
+}
+</style>
+</head>
+<body>
+
+<!-- Floating petals -->
+<div class="petals-bg" id="petalsContainer"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-tag">С днём рождения</p>
+  <h1 class="hero-title">Моя<br><em>любимая</em></h1>
+  <p class="hero-sub">Сегодня твой день — и я хочу, чтобы ты знала, как много ты для меня значишь</p>
+  <div class="scroll-hint">листай вниз<span></span></div>
+</section>
+
+<!-- MEMORIES -->
+<section id="memories">
+  <div class="section-label">наши моменты</div>
+  <h2 class="section-title">Воспоминания,<br>которые я храню</h2>
+
+  <!-- PHOTO GALLERY -->
+  <div class="photo-slider">
+
+    <button class="slider-btn prev">←</button>
+  
+    <div class="slider-content">
+      <img id="sliderImage" src="" alt="">
+      <p id="sliderCaption"></p>
+    </div>
+  
+    <button class="slider-btn next">→</button>
+  
+  </div>
+
+  
+</section>
+
+<!-- REASONS -->
+<section id="reasons">
+  <div class="section-label">за что я тебя люблю</div>
+  <h2 class="section-title">18 причин,<br>почему ты особенная</h2>
+  <p class="reasons-intro">Тебе исполняется 18 — и у меня ровно 18 причин сказать, как много ты для меня значишь.</p>
+  <div class="reasons-list" id="reasonsList"></div>
+</section>
+
+<!-- LETTER -->
+<section id="letter">
+  <div class="section-label">только для тебя</div>
+  <h2 class="section-title">Письмо<br><em>для моей любимой</em></h2>
+  <div class="envelope-wrap" id="envelopeWrap">
+    <div class="envelope">
+      <span class="envelope-icon">💌</span>
+      <p class="letter-text" id="letterText"></p>
+      <p class="letter-sign" id="letterSign"></p>
+    </div>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section id="finale">
+  <p class="finale-small">с любовью и нежностью</p>
+  <h2 class="finale-big">С днём рождения,<br><em>моя дорогая</em></h2>
+  <div class="finale-hearts">🌸 💗 🌸</div>
+  <div class="heart-wrap">
+    <p class="heart-hint">нажми на меня 🌸</p>
+    <button class="big-heart" id="heartBtn">💗</button>
+  </div>
+  <canvas id="confettiCanvas"></canvas>
+
+</section>
+
+<script>
+// ══════════════════════════════════════════════
+//  ДАННЫЕ — редактируй здесь
+// ══════════════════════════════════════════════
+
+
+
+const REASONS = [
+  "За твою улыбку, которая освещает моё сердце",
+  "За то, как ты смеёшься — по-настоящему, от души",
+  "За твою заботу ко мне",
+  "За то, что ты всегда остаёшься собой",
+  "За твой характер — мягкий и сильный одновременно",
+  "За то, как ты умеешь слушать",
+  "За маленькие детали, которые замечаешь только ты",
+  "За твою нежность, которую ты даришь не каждому",
+  "За то, что рядом с тобой мне легко дышать",
+  "За твои глаза, в которых можно утонуть",
+  "За то, что ты веришь в людей, даже когда это сложно",
+  "За твою искренность — ты никогда не притворяешься",
+  "За то, как ты умеешь превращать обычный день в особенный",
+  "За твой вкус — в музыке, в словах, в жизни",
+  "За то, что ты выбрала меня",
+  "За все тихие и громкие вечера, которые мы провели вместе",
+  "За то, что ты делаешь меня лучше просто своим присутствием",
+  "За всё то, что я ещё не успел сказать — но обязательно скажу",
+];
+
+const LETTER = `Моя дорогая,
+
+сегодня тебе 18. И я не знаю с чего начать — потому что слов всегда меньше, чем того, что я чувствую.
+
+Ты появилась в моей жизни спонтанно и неожиданно и просто изменила её. Не резко, не громко — тихо и по-настоящему. С тобой всё стало чуть теплее, чуть ярче, чуть больше похоже на то, каким жизнь и должна быть.
+
+Я рад, что именно ты.
+
+С днём рождения, моя любимая. Пусть этот год будет успешным и всё у тебя получится — ты это заслуживаешь больше, чем кто-либо. Я в тебя верю.`;
+
+const LETTER_SIGN = "— твой Даник 🌸";
+
+// ══════════════════════════════════════════════
+//  РЕНДЕР
+// ══════════════════════════════════════════════
+
+// Petals
+const petalEmojis = ['🌸','🌺','✿','❀','🌷'];
+const container = document.getElementById('petalsContainer');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = petalEmojis[i % petalEmojis.length];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+  p.style.animationDuration = (8 + Math.random() * 10) + 's';
+  p.style.animationDelay = (Math.random() * 12) + 's';
+  container.appendChild(p);
+}
+
+
+// Reasons
+const rList = document.getElementById('reasonsList');
+REASONS.forEach((r, i) => {
+  const el = document.createElement('div');
+  el.className = 'reason-item';
+  el.style.transitionDelay = (i * 0.06) + 's';
+  el.innerHTML = `<span class="reason-num">${String(i+1).padStart(2,'0')}</span><span class="reason-text">${r}</span>`;
+  rList.appendChild(el);
+});
+
+const PHOTOS = [
+  {src:"images/photo1.webp",caption:"Миленькая стесняшка"},
+  {src:"images/photo2.webp",caption:"Очень люблю эту фотку"},
+  {src:"images/photo3.webp",caption:"Я очень боялся так сделать, но смог ради тебя"},
+  {src:"images/photo4.webp",caption:"Милые и счастливые"},
+  {src:"images/photo5.webp",caption:"Твоя нелюбимая кепка"},
+  {src:"images/photo6.webp",caption:"Дурачимся"},
+  {src:"images/photo7.webp",caption:"Этот взгляд..."},
+  {src:"images/photo8.webp",caption:"Моя любимая заставка"},
+  {src:"images/photo9.webp", caption: "Тогда ты злилась на меня"},
+  {src:"images/photo10.webp", caption: "Атмосферненько"},
+  {src:"images/photo11.webp", caption:"Прекрасна, как тот день"},
+  {src:"images/photo12.webp",caption:"На память для родителей"},
+  {src:"images/photo13.webp",caption:"Люблю тебя"},
+  {src:"images/photo14.webp",caption:"Зайки на небоскребе"},
+  {src:"images/photo15.webp", caption:"Серьезные люди"},
+  {src:"images/photo16.webp",caption:"Моё сердце только для тебя"}
+];
+let currentPhoto = 0;
+
+const sliderImage = document.getElementById('sliderImage');
+const sliderCaption = document.getElementById('sliderCaption');
+
+function updateSlider(){
+
+  sliderImage.src = PHOTOS[currentPhoto].src;
+  sliderCaption.textContent = PHOTOS[currentPhoto].caption;
+
+}
+
+document.querySelector('.next').onclick = () => {
+
+  currentPhoto++;
+
+  if(currentPhoto >= PHOTOS.length){
+    currentPhoto = 0;
+  }
+
+  updateSlider();
+
+};
+
+document.querySelector('.prev').onclick = () => {
+
+  currentPhoto--;
+
+  if(currentPhoto < 0){
+    currentPhoto = PHOTOS.length - 1;
+  }
+
+  updateSlider();
+
+};
+
+updateSlider();
+
+// Letter
+document.getElementById('letterText').textContent = LETTER;
+document.getElementById('letterSign').textContent = LETTER_SIGN;
+
+// ══════════════════════════════════════════════
+//  INTERSECTION OBSERVER
+// ══════════════════════════════════════════════
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.section-label,.section-title,.reasons-intro,.memory-card,.reason-item,.gallery-item,.envelope-wrap,.finale-small,.finale-big,.finale-hearts')
+        .forEach(c => c.classList.add('visible'));
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(s => obs.observe(s));
+
+// ── HEART CONFETTI ──
+
+(function(){
+
+const canvas = document.getElementById('confettiCanvas');
+const ctx = canvas.getContext('2d');
+
+const btn = document.getElementById('heartBtn');
+
+const DPR = window.devicePixelRatio || 1;
+
+let particles = [];
+let raf = null;
+
+const EMOJIS = ['💗','💕','💖','✨','🌸'];
+
+
+
+// ─────────────────────────
+// CANVAS RESIZE
+// ─────────────────────────
+
+function resize(){
+
+  canvas.width = window.innerWidth * DPR;
+  canvas.height = window.innerHeight * DPR;
+
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+}
+
+window.addEventListener('resize', resize);
+
+resize();
+
+
+
+// ─────────────────────────
+// CREATE PARTICLES
+// ─────────────────────────
+
+function spawnFrom(x, y){
+
+  const count = 15;
+
+  for(let i = 0; i < count; i++){
+
+    const angle = Math.random() * Math.PI * 2;
+
+    const speed = Math.random() * 14 + 8;
+
+    particles.push({
+
+      emoji: EMOJIS[(Math.random() * EMOJIS.length) | 0],
+
+      x: x,
+      y: y,
+
+      vx: Math.cos(angle) * speed,
+
+      vy: Math.sin(angle) * speed - (Math.random() * 14 + 10),
+
+      size: Math.random() * 14 + 20,
+
+      alpha: 1,
+
+      gravity: 0.16,
+
+      decay: 0.012 + Math.random() * 0.008
+
+    });
+
+  }
+
+}
+
+
+
+// ─────────────────────────
+// ANIMATION
+// ─────────────────────────
+
+function animate(){
+
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+  for(let i = particles.length - 1; i >= 0; i--){
+
+    const p = particles[i];
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    p.vy += p.gravity;
+
+    p.alpha -= p.decay;
+
+    if(p.alpha <= 0){
+
+      particles.splice(i, 1);
+
+      continue;
+
+    }
+
+    ctx.globalAlpha = p.alpha;
+
+    ctx.font = p.size + 'px serif';
+
+    ctx.fillText(p.emoji, p.x, p.y);
+
+  }
+
+  ctx.globalAlpha = 1;
+
+  if(particles.length > 0){
+
+    raf = requestAnimationFrame(animate);
+
+  } else {
+
+    raf = null;
+
+  }
+
+}
+
+
+
+// ─────────────────────────
+// BUTTON CLICK
+// ─────────────────────────
+function getCenter(el){
+
+const r = el.getBoundingClientRect();
+
+return {
+  x: r.left + r.width / 2,
+  y: r.top + r.height / 2
+};
+
+}
+btn.addEventListener('click', function(){ 
+  btn.style.transform = 'scale(1.35)'; 
+  setTimeout(() => btn.style.transform = '', 150); 
+  const c = getCenter(btn); 
+  spawnFrom(c.x, c.y); 
+  if(!raf) raf = requestAnimationFrame(animate); });
+
+
+
+btn.addEventListener('touchstart', function(e){ 
+  e.preventDefault(); 
+  btn.style.transform = 'scale(1.35)';
+  setTimeout(() => btn.style.transform = '', 150); 
+  const t = e.touches[0]; spawnFrom(t.clientX, t.clientY); 
+  if(!raf) raf = requestAnimationFrame(animate); 
+}, {passive: false});
+
+})();
+</script>
+</body>
+</html>
