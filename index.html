@@ -657,13 +657,13 @@ resize();
 
 function spawnFrom(x, y){
 
-  const count = 25;
+  const count = 35;
 
   for(let i = 0; i < count; i++){
 
     const angle = Math.random() * Math.PI * 2;
 
-    const speed = 2 + 8;
+    const speed = Math.random() * 3 + 2;
 
     particles.push({
 
@@ -672,9 +672,9 @@ function spawnFrom(x, y){
       x: x,
       y: y,
 
-      vx: Math.cos(angle) * speed - 2,
+      vx: Math.cos(angle) * speed,
 
-      vy: Math.sin(angle) * speed - (Math.random() * 14 + 10),
+      vy: Math.sin(angle) * speed - (Math.random() * 7 + 10),
 
       size: Math.random() * 14 + 20,
 
