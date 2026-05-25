@@ -477,7 +477,7 @@
 const REASONS = [
   "За твою улыбку, которая освещает моё сердце",
   "За то, как ты смеёшься — по-настоящему, от души",
-  "За твою заботу ко мне",
+  "За твою заботу обо мне",
   "За то, что ты всегда остаёшься собой",
   "За твой характер — мягкий и сильный одновременно",
   "За то, как ты умеешь слушать",
@@ -657,13 +657,13 @@ resize();
 
 function spawnFrom(x, y){
 
-  const count = 15;
+  const count = 25;
 
   for(let i = 0; i < count; i++){
 
     const angle = Math.random() * Math.PI * 2;
 
-    const speed = Math.random() * 14 + 8;
+    const speed = Math.random() * 10 + 8;
 
     particles.push({
 
@@ -672,7 +672,7 @@ function spawnFrom(x, y){
       x: x,
       y: y,
 
-      vx: Math.cos(angle) * speed,
+      vx: Math.cos(angle) * speed - 2,
 
       vy: Math.sin(angle) * speed - (Math.random() * 14 + 10),
 
